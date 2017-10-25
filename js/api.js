@@ -22,6 +22,12 @@ function Setup(cfg_host, cfg_user, cfg_pass, cfg_botname) {
     console.log("Using bot: " + cfg_botname);
 };
 
+$('#minifier').live('click', function() {
+    $(".roomListDashboard").toggleClass("minimized");
+    $("#membersList").toggleClass("minimized");
+    $("#client").toggleClass("clientSizer");
+});
+
 $('.setup').live('click', function() {
     Setup('http://192.168.1.110:8008', 'torkel', 'hejsan', 'mybot');
 });
@@ -228,6 +234,7 @@ var cRoom = function(roomAlias) {
             
             roomInfo.push(response);
             setRooms(roomInfo);
+            loadRoomContent(response.room_id);
         },
         error: function(err) {
             alert(JSON.stringify($.parseJSON(err.responseText)));  

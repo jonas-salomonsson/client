@@ -42,3 +42,10 @@ th,td
     cursor: pointer;
 }
 
+.minimized {
+    display: none;
+}
+
+.clientSizer {
+    width: 300px;
+}

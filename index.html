@@ -5,10 +5,11 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-
+<div id="client">
 <input type="button" class="setup" value="Setup"></input>
 <input type="button" class="leaveRoom" value="Leave current room"></input>
 <input type="button" class="inviteUser" value="Invite a user to current room"></input>
+<input type="button" id="minifier" value="Toggle mini client"></input>
 
 <div class="signUp">
     <p>Matrix example application: Requires a local homeserver running at http://192.168.1.110:8008</p>
@@ -46,10 +47,6 @@
 <div class="roomContents">
     <p id="roomName">Select a room</p>
     <div class="messageWrapper">
-<!--        <table id="messages">
-            <tbody>
-            </tbody>
-        </table>-->
         <div id="messages">
         </div>
     </div>
@@ -59,15 +56,16 @@
     </form>
 </div>
 
-<div>
-    <p>Member list:</p>
-    <div class="membersWrapper">
-        <table id="members">
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-</div>
+            <div id="membersList">
+                <p>Member list:</p>
+                <div class="membersWrapper">
+                    <table id="members">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </body>
 <html>
 
