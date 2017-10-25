@@ -1,10 +1,15 @@
 <html>
 <head>
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="/js/api.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
+
+<input type="button" class="setup" value="Setup"></input>
+<input type="button" class="leaveRoom" value="Leave current room"></input>
+<input type="button" class="inviteUser" value="Invite a user to current room"></input>
+
 <div class="signUp">
     <p>Matrix example application: Requires a local homeserver running at http://192.168.1.110:8008</p>
     <input type="text" id="hostAddress" placeholder="Server address"></input>
@@ -41,10 +46,12 @@
 <div class="roomContents">
     <p id="roomName">Select a room</p>
     <div class="messageWrapper">
-        <table id="messages">
+<!--        <table id="messages">
             <tbody>
             </tbody>
-        </table>
+        </table>-->
+        <div id="messages">
+        </div>
     </div>
     <form class="sendMessageForm">
         <input type="text" class="textEntry" id="body" placeholder="Enter text here..." onkeydown="javascript:if (event.keyCode == 13) document.getElementById('sendMsg').focus()"></input>

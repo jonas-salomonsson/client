@@ -9,6 +9,70 @@ var memberInfo = [];
 var viewingRoomId;
 
 var host = "http://192.168.1.110:8008";
+var isSetup = false;
+var user = "";
+var botname = "";
+
+function Setup(cfg_host, cfg_user, cfg_pass, cfg_botname) {
+    host = cfg_host;
+    user = cfg_user;
+    botname = cfg_botname;
+    isSetup = true;
+    login(cfg_user, cfg_pass);
+    console.log("Using bot: " + cfg_botname);
+};
+
+$('.setup').live('click', function() {
+    Setup('http://192.168.1.110:8008', 'torkel', 'hejsan', 'mybot');
+});
+
+var leaveRoom = function(name) {
+    var url = host + "/_matrix/client/api/v1/rooms/" + name + "/leave?access_token=" + accountInfo.access_token;
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            if(data==={}) {
+                console.log("Left room: " + name);
+                getCurrentRoomList();
+            }
+        },
+        error: function(err) {
+            alert("Unable to leave room: is the homeserver running?");  
+        }
+    }); 
+};
+
+$('.leaveRoom').live('click', function() {
+    leaveRoom(viewingRoomId);
+});
+
+$('.inviteUser').live('click', function() {
+    inviteUserToCurrentRoom(viewingRoomId, '@jonas:synapse.salle.space');
+});
+
+var inviteUserToCurrentRoom = function(room_id, user_id) {
+    var url = host + "/_matrix/client/api/v1/rooms/" + room_id + "/invite?access_token=" + accountInfo.access_token;
+    var data = JSON.stringify({ user_id: user_id });
+    console.log(data);
+
+    $.ajax({
+        url: url,
+        data: data,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            if(data==={}) {
+                console.log("Invited: " + user_id + " to room: " + room_id);
+            }
+        },
+        error: function(err) {
+            alert("Unable to invite user to room: is the homeserver running?");  
+        }
+    }); 
+};
 
 var longpollEventStream = function() {
     var url = host + "/_matrix/client/api/v1/events?access_token=$token&from=$from";
@@ -83,12 +147,16 @@ var onLoggedIn = function(data) {
     $(".roomListDashboard").css({visibility: "visible"});
     $(".roomContents").css({visibility: "visible"});
     $(".signUp").css({display: "none"});
+    if (isSetup) {
+        var roomName = user+(new Date().getMilliseconds().toString());
+        console.log("Creating room: "+roomName);
+        cRoom(roomName);
+        isSetup = false;
+    }
 };
 
-$('.login').live('click', function() {
-    host = $("#hostAddress").val();
-    var user = $("#userLogin").val();
-    var password = $("#passwordLogin").val();
+var login = function(user, password) {
+    //host = $("#hostAddress").val();
     var url = host + "/_matrix/client/api/v1/login";
     console.log("host: " + host + " url: " + url);
     $.ajax({
@@ -104,13 +172,19 @@ $('.login').live('click', function() {
             alert("Unable to login: is the homeserver running?");  
         }
     }); 
+};
+
+$('.login').live('click', function() {
+    var user = $("#userLogin").val();
+    var password = $("#passwordLogin").val();
+    login(user, password);
 });
 
-$('.register').live('click', function() {
-    host = $("#hostAddress").val();
+var register = function() {
+    //host = $("#hostAddress").val();
     var user = $("#userReg").val();
     var password = $("#passwordReg").val();
-    var url = host + "/_matrix/client/api/v1/login";
+    var url = host + "/_matrix/client/api/v1/register";
     console.log("host: " + host + " url: " + url);
     $.ajax({
         url: url,
@@ -130,10 +204,13 @@ $('.register').live('click', function() {
             alert("Unable to register: "+msg);  
         }
     });
+};
+
+$('.register').live('click', function() {
+    register();
 });
 
-$('.createRoom').live('click', function() {
-    var roomAlias = $("#roomAlias").val();
+var cRoom = function(roomAlias) {
     var data = {};
     if (roomAlias.length > 0) {
         data.room_alias_name = roomAlias;   
@@ -156,6 +233,15 @@ $('.createRoom').live('click', function() {
             alert(JSON.stringify($.parseJSON(err.responseText)));  
         }
     }); 
+};
+
+var createRoom = function() {
+    var roomAlias = $("#roomAlias").val();
+    cRoom(roomAlias);
+};
+
+$('.createRoom').live('click', function() {
+    createRoom();
 });
 
 var getCurrentRoomList = function() {
@@ -311,10 +397,10 @@ var addMessage = function(data) {
         return;
     }
 
-    var row = "<tr>" +
-              "<td>"+data.user_id+"</td>" +
-              "<td>"+msg+"</td>" +
-              "</tr>"; 
+    var row =   "<div class='message'>" +
+                "<div class='userDiv'>" + data.user_id + "</div>" + 
+                "<div class='msgDiv'>" + msg + "</div>" +
+                "</div>";
     $("#messages").append(row);
 };
 
