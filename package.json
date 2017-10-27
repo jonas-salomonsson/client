@@ -1,0 +1,28 @@
+{
+  "name": "upclient",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=5.5.1"
+  },
+  "description": "Small matrix chat client suitable for embedding.",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonas-salomonsson/client.git"
+  },
+  "keywords": [
+    "matrix",
+    "synapse",
+    "api",
+    "client"
+  ],
+  "author": "jonas.salomonsson@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonas-salomonsson/client/issues"
+  },
+  "homepage": "https://github.com/jonas-salomonsson/client#readme"
+}

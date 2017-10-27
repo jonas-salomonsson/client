@@ -1,7 +1,12 @@
+'use strict';
+
 var accountInfo = {};
 
 var eventStreamInfo = {
     from: "END"
+};
+module.exports = {
+    Setup
 };
 
 var roomInfo = [];
@@ -13,7 +18,7 @@ var isSetup = false;
 var user = "";
 var botname = "";
 
-function Setup(cfg_host, cfg_user, cfg_pass, cfg_botname) {
+exports.Setup = function (cfg_host, cfg_user, cfg_pass, cfg_botname) {
     host = cfg_host;
     user = cfg_user;
     botname = cfg_botname;
@@ -29,10 +34,10 @@ $('#minifier').live('click', function() {
 });
 
 $('.setup').live('click', function() {
-    Setup('https://synapse.cynergit.nu', 'torkel', 'hejsan', 'mybot');
+    Setup('https://synapse.cynergit.nu', 'jonas', 'hejsan12345', 'mybot');
 });
 
-var leaveRoom = function(name) {
+exports.leaveRoom = function(name) {
     var url = host + "/_matrix/client/api/v1/rooms/" + name + "/leave?access_token=" + accountInfo.access_token;
 
     $.ajax({
@@ -63,7 +68,7 @@ $('.inviteUser').live('click', function() {
     inviteUserToCurrentRoom(viewingRoomId);
 });
 
-var inviteUserToCurrentRoom = function(room_id, user_id) {
+exports.inviteUserToCurrentRoom = function(room_id, user_id) {
     if(!user_id) {
         user_id = $('').val();
     }
@@ -167,7 +172,7 @@ var onLoggedIn = function(data) {
     }
 };
 
-var login = function(user, password) {
+exports.login = function(user, password) {
     //host = $("#hostAddress").val();
     var url = host + "/_matrix/client/api/v1/login";
     console.log("host: " + host + " url: " + url);
@@ -192,7 +197,7 @@ $('.login').live('click', function() {
     login(user, password);
 });
 
-var register = function() {
+exports.register = function() {
     //host = $("#hostAddress").val();
     var user = $("#userReg").val();
     var password = $("#passwordReg").val();
@@ -222,7 +227,7 @@ $('.register').live('click', function() {
     register();
 });
 
-var cRoom = function(roomAlias) {
+exports.cRoom = function(roomAlias) {
     var data = {};
     if (roomAlias.length > 0) {
         data.room_alias_name = roomAlias;   
@@ -315,7 +320,7 @@ $('.sendMessage').live('click', function() {
     sendMessage(viewingRoomId, body);
 });
 
-var sendMessage = function(roomId, body) {
+exports.sendMessage = function(roomId, body) {
     var msgId = $.now();
     
     var url = host + "/_matrix/client/api/v1/rooms/$roomid/send/m.room.message?access_token=$token";
