@@ -11,7 +11,6 @@
                 <input type="button" class="leaveRoom" value="Leave current room"></input>
 
                 <div id="userGroup">
-                    <input type="button" class="inviteBot" value="Invite a bot to current room"></input>
                     <input type="button" class="inviteUser" value="Invite a user to current room"></input>
                     <input type="text" id="userNameToInvite" placeholder="User Id of who you want to invite"></input>
                 </div>

@@ -8,7 +8,7 @@ var roomInfo = [];
 var memberInfo = [];
 var viewingRoomId;
 
-var host = "https://synapse.cynergit.nu";
+var host = "http://192.168.1.110:8008";
 var isSetup = false;
 var user = "";
 var botname = "";
@@ -29,7 +29,7 @@ $('#minifier').live('click', function() {
 });
 
 $('.setup').live('click', function() {
-    Setup('https://synapse.cynergit.nu', 'torkel', 'hejsan', 'mybot');
+    Setup('http://192.168.1.110:8008', 'torkel', 'hejsan', 'mybot');
 });
 
 var leaveRoom = function(name) {
@@ -55,20 +55,14 @@ $('.leaveRoom').live('click', function() {
     leaveRoom(viewingRoomId);
 });
 
-$('.inviteBot').live('click', function() {
-    inviteUserToCurrentRoom(viewingRoomId, '@goneb:synapse.salle.space');
-});
-
 $('.inviteUser').live('click', function() {
-    inviteUserToCurrentRoom(viewingRoomId);
+    inviteUserToCurrentRoom(viewingRoomId, '@jonas:synapse.salle.space');
 });
 
 var inviteUserToCurrentRoom = function(room_id, user_id) {
-    if(!user_id) {
-        user_id = $('').val();
-    }
     var url = host + "/_matrix/client/api/v1/rooms/" + room_id + "/invite?access_token=" + accountInfo.access_token;
     var data = JSON.stringify({ user_id: user_id });
+    console.log(data);
 
     $.ajax({
         url: url,
@@ -418,9 +412,9 @@ var addMessage = function(data) {
 };
 
 var addMember = function(data) {
-    var row = "<div class='memberBlock'>" +
-              "<div class='memberState'>"+data.state_key+"</div>" +
-              "<div class='memberMembership>"+data.content.membership+"</div>" +
-              "</div>"; 
+    var row = "<tr>" +
+              "<td>"+data.state_key+"</td>" +
+              "<td>"+data.content.membership+"</td>" +
+              "</tr>"; 
     $("#members").append(row);
 };
