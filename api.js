@@ -1,18 +1,31 @@
 'use strict';
 
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
+require("jsdom").env("", function(err, window) {
+    if(err) {
+        console.error(err);
+        return;
+    }
+
+    var $ = require("jquery")(window);
+});
+
 var accountInfo = {};
 
 var eventStreamInfo = {
     from: "END"
 };
 module.exports = {
-    Setup = Setup,
-    leaveRoom = leaveRoom,
-    inviteUserToCurrentRoom,
-    login = login,
-    register = register,
-    cRoom = cRoom,
-    sendMessage = sendMessage
+    test: test,
+    Setup: Setup,
+    leaveRoom: leaveRoom,
+    inviteUserToCurrentRoom: inviteUserToCurrentRoom,
+    login: login,
+    register: register,
+    cRoom: cRoom,
+    sendMessage: sendMessage
 };
 
 var roomInfo = [];
@@ -23,6 +36,10 @@ var host = "https://synapse.cynergit.nu";
 var isSetup = false;
 var user = "";
 var botname = "";
+
+var test = function(input) {
+    return input;
+};
 
 var Setup = function (cfg_host, cfg_user, cfg_pass, cfg_botname) {
     host = cfg_host;
