@@ -5,7 +5,7 @@
     "node": ">=5.5.1"
   },
   "description": "Small matrix chat client suitable for embedding.",
-  "main": "js/app.js",
+  "main": "api.js",
   "scripts": {
     "test": "mocha --reporter spec"
   },
